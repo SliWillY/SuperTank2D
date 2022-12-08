@@ -22,7 +22,7 @@ public class bullet : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        if (collision.gameObject.tag!=null)
+        if (collision.gameObject.tag!=null && collision.gameObject.tag!="camur")
         {
             Destroy(this.gameObject);
 

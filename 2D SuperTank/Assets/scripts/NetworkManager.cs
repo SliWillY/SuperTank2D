@@ -48,6 +48,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        //PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
         Debug.Log("Odaya Girildi.");
     }
 

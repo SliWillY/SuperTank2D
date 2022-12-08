@@ -8,6 +8,9 @@ TagManager:
   - turuncutank
   - bullet
   - player2
+  - Bullet
+  - camur
+  - benzinAl
   layers:
   - Default
   - TransparentFX
