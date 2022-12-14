@@ -6,40 +6,39 @@ using Photon.Pun;
 public class TankController : MonoBehaviour
 {
 
-    PhotonView pw;
-    public float benzin =10000f;
-    public GameObject gasBar;
+    PhotonView pv;
+    [SerializeField] float Feul = 10000f;
+    [SerializeField] GameObject feulBar;
 
-    private Rigidbody2D rb2d;
+    private Rigidbody2D rigidBody;
     private Vector2 movementVector;
     public float maxSpeed = 180;
     public float rotationSpeed = 100;
     public float turretRotationSpeed = 150;
-    public Transform turretParent;
+    [SerializeField] Transform turretParent;
+    [SerializeField] private GameObject cinemachineCam;
 
-    private Camera mainCamera;
-    public GameObject bullet;
-    public Transform atesNoktasi;
-    public float mermiHizi;
-    public float sayac;
-    public GameObject benzinAl;
+    public Transform firePos;
+    public float bulletSpeed;
+    public float fireRate;
 
 
 
     private void Awake()
     {
-        benzin = 10000f;
-
-        pw = GetComponent<PhotonView>();
-        rb2d = GetComponent<Rigidbody2D>();
-        gasBar = GameObject.FindGameObjectWithTag("GasBar");
-        mainCamera = Camera.main;
+        pv = GetComponent<PhotonView>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        feulBar = GameObject.FindGameObjectWithTag("GasBar");
+        if (pv.IsMine)
+        {
+            cinemachineCam.SetActive(true);
+        }
     }
 
     private void Start()
     {
         
-        if (pw.IsMine)
+        if (pv.IsMine)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -59,65 +58,44 @@ public class TankController : MonoBehaviour
 
     private void Update()
     {
-        if (pw.IsMine)
+        if (pv.IsMine)
         {
-            hareket();
-            atesEt();
+            Move();
+            Fire();
         }     
     }
 
     //ateþ kýsmý
-    public void atesEt()
+    public void Fire()
     {
-        sayac -= Time.deltaTime;
+        fireRate -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0))
         {
-            if (sayac <= 0)
+            if (fireRate <= 0)
             {
-                GameObject mermi = Instantiate(bullet, atesNoktasi.position, atesNoktasi.rotation);
-                mermi.GetComponent<Rigidbody2D>().velocity = atesNoktasi.up * mermiHizi;
-                Destroy(mermi, 5f);
-                sayac = 1.5f;
+                GameObject _bullet = PhotonNetwork.Instantiate("Bulleto", firePos.position, firePos.rotation);
+                fireRate = 1.5f;
             }
 
         }
     }
     //hareket kýsmý
 
-    void hareket()
+    void Move()
     {
 
-        rb2d.velocity = (Vector2)transform.up * movementVector.y * maxSpeed * Time.fixedDeltaTime;
-        rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
-        /*
-        Vector3 mouseWorldPos = mainCamera.WorldToScreenPoint(Input.mousePosition);
-        mouseWorldPos.z = 0;
-        HandleTurretMovement(mouseWorldPos);
-        */
-        if (Input.GetKey(KeyCode.W))
+        rigidBody.velocity = (Vector2)transform.up * movementVector.y * maxSpeed * Time.fixedDeltaTime;
+        rigidBody.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
-            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
+            feulBar.transform.localScale = new Vector2(Feul / 10000, 1);
+            Feul -= Time.deltaTime * 120;
         }
 
-        if (benzin <= 0)
+        if (Feul <= 0)
         {
-            benzin = 0;
+            Feul = 0;
             maxSpeed = 50f;
         }
 
@@ -138,8 +116,6 @@ public class TankController : MonoBehaviour
         turretParent.rotation = Quaternion.RotateTowards(turretParent.rotation, Quaternion.Euler(0, 0, desiredAngle - 90), rotationStep);
     }
 
-    // trigger kýsmý
-
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "camur")
@@ -149,14 +125,15 @@ public class TankController : MonoBehaviour
 
         if (collision.gameObject.tag == "benzinAl")
         {
-            benzin =+ 3000;
-            if (benzin >= 10000)
+            Feul += 3000;
+            if (Feul >= 10000)
             {
-                benzin = 10000;
+                Feul = 10000;
             }
-
-            PhotonNetwork.Destroy(collision.gameObject);
-
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(collision.gameObject);
+            }
         }
     }
 

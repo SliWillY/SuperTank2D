@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Photon.Pun;
 
 public class PlayerInput : MonoBehaviour
 {
     [SerializeField]
     private Camera mainCamera;
+    private PhotonView pv;
 
     public UnityEvent OnShoot = new UnityEvent();
     public UnityEvent<Vector2> OnMoveBody = new UnityEvent<Vector2>();
@@ -15,6 +17,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         if (mainCamera == null)
             mainCamera = Camera.main;
     }
@@ -22,6 +25,10 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!pv.IsMine)
+        {
+            return;
+        }
         GetBodyMovement();
         GetTurretMovement();
         GetShootingInput();

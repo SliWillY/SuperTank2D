@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class saglik : MonoBehaviour
 {
 
-    public int saglýk = 100;
-    public Slider canBari;
-    
-    
+    public int health = 100;
+    public Slider healthBar;
+    private PhotonView pv;
+
+
 
     void Start()
     {
-        
+        pv = GetComponent<PhotonView>();
     }
 
     void Update()
     {
-        canBari.value = saglýk;
+        healthBar.value = health;
     }
 
 
@@ -26,12 +28,22 @@ public class saglik : MonoBehaviour
     {
         if (collision.gameObject.tag == "bullet")
         {
-            saglýk = saglýk - 20;
-            if (saglýk <=0)
+            if (!pv.IsMine)
             {
-                
-                Destroy(this.gameObject);
+                return;
+            }
+
+            pv.RPC("healthdicrease", RpcTarget.All);
+            if (health <= 0)
+            {
+                PhotonNetwork.Destroy(gameObject);
             }
         }
+    }
+
+    [PunRPC]
+    void healthdicrease()
+    {
+        health = health - 20;
     }
 }

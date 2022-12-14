@@ -55,11 +55,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("player", new Vector3(-4, -1), Quaternion.identity, 0, null);
+            PhotonNetwork.Instantiate("player3", new Vector3(-4, -1), Quaternion.identity, 0, null);
+            Camera.main.gameObject.SetActive(true);
         }
         else
         {
             PhotonNetwork.Instantiate("player2", new Vector3(-3, -1), Quaternion.identity, 0, null);
+            Camera.main.gameObject.SetActive(true);
         }
         /*
         PhotonNetwork.Instantiate("player", new Vector3(-4,-1), Quaternion.identity,0,null);             

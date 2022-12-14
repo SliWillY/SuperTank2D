@@ -104,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: d5fbe2929b04b3b45bb623b090945592, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 83d6cb789721d12419341b620c4a2783, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -289,8 +289,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3492318976938623995}
   m_Layer: 0
-  m_Name: player2
-  m_TagString: player2
+  m_Name: player3
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 393965513585561301}
   - component: {fileID: 7627001609547251825}
   m_Layer: 0
-  m_Name: tank2
+  m_Name: tank
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,7 +910,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 72acf30591ce78c4e85fb9badeb99b11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: af48401b6dec7b344884bdeae33619cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -930,8 +930,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3492318977749728987}
-  - component: {fileID: 6345617531641362639}
-  - component: {fileID: 8555675780254613244}
+  - component: {fileID: 5218248884132072336}
+  - component: {fileID: 1136837458882945503}
   m_Layer: 0
   m_Name: tank turretParent
   m_TagString: Untagged
@@ -956,7 +956,7 @@ Transform:
   m_Father: {fileID: 3492318977522938763}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6345617531641362639
+--- !u!114 &5218248884132072336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,7 +972,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &8555675780254613244
+--- !u!114 &1136837458882945503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -991,7 +991,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 6345617531641362639}
+  - {fileID: 5218248884132072336}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
