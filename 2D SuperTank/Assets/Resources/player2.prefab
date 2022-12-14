@@ -310,9 +310,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318977522938763}
-  - {fileID: 3492318977573685293}
-  - {fileID: 3492318977749728987}
-  - {fileID: 3492318976955247382}
   - {fileID: 3492318977900177580}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -383,17 +380,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318976955247377}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.024002537}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.79607785, y: 0.79607785, z: 0.79607785}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318976972040254}
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 3
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 966.4989, y: 543.13403}
+  m_AnchoredPosition: {x: 771.92395, y: 432.20978}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3492318976955247381
@@ -670,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3492318977522938763}
   - component: {fileID: 3492318977522938767}
+  - component: {fileID: 5977648922007010921}
   - component: {fileID: 3492318977522938766}
   - component: {fileID: 3492318977522938761}
   - component: {fileID: 3492318977522938760}
@@ -693,7 +691,10 @@ Transform:
   m_LocalPosition: {x: -3.16, y: 0.21, z: 0.024002537}
   m_LocalScale: {x: 1.2561586, y: 1.2561586, z: 1.2561586}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3492318977573685293}
+  - {fileID: 3492318977749728987}
+  - {fileID: 3492318976955247382}
   m_Father: {fileID: 3492318976938623995}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -718,6 +719,64 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5977648922007010921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3492318977522938762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 381ed113fe452d54fbcda1fe8e2670c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: atesEt
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMoveBody:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: HandleMoveBody
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMoveTurret:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: HandleTurretMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &3492318977522938766
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -845,12 +904,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318977573685292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.16, y: 0.21, z: 0.024002537}
-  m_LocalScale: {x: 7.5369515, y: 7.5369515, z: 7.5369515}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 1
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3492318977573685330
 SpriteRenderer:
@@ -928,14 +987,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318977749728986}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2, y: -0.064285964, z: 0.024002537}
-  m_LocalScale: {x: 1.2561586, y: 1.2561586, z: 1.2561586}
+  m_LocalPosition: {x: -0.031843085, y: -0.21835299, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318975983426777}
   - {fileID: 3492318975944271244}
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 2
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3492318977900177583
 GameObject:
@@ -968,7 +1027,7 @@ Transform:
   m_Children:
   - {fileID: 3492318976638406918}
   m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3492318977900177581
 MonoBehaviour:

@@ -38,7 +38,7 @@ public class TankController : MonoBehaviour
 
     private void Start()
     {
-        /*
+        
         if (pw.IsMine)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -50,7 +50,7 @@ public class TankController : MonoBehaviour
                 transform.position = new Vector3(-3, 0);
             }
         }
-        */
+        
     }
 
 
@@ -75,8 +75,8 @@ public class TankController : MonoBehaviour
             if (sayac <= 0)
             {
                 GameObject mermi = Instantiate(bullet, atesNoktasi.position, atesNoktasi.rotation);
-                //mermi.GetComponent<Rigidbody2D>().velocity = atesNoktasi.up * mermiHizi;
-                //Destroy(mermi, 5f);
+                mermi.GetComponent<Rigidbody2D>().velocity = atesNoktasi.up * mermiHizi;
+                Destroy(mermi, 5f);
                 sayac = 1.5f;
             }
 
