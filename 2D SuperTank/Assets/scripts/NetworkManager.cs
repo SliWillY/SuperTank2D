@@ -53,6 +53,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+<<<<<<< HEAD
         if (pw.IsMine)
         {
             PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
@@ -64,6 +65,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
            
             Debug.Log("Odaya Girildi.");
+=======
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("player", new Vector3(-4, -1), Quaternion.identity, 0, null);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("player2", new Vector3(-3, -1), Quaternion.identity, 0, null);
+        }
+        /*
+        PhotonNetwork.Instantiate("player", new Vector3(-4,-1), Quaternion.identity,0,null);             
+        PhotonNetwork.Instantiate("player2", new Vector3(-3,-1), Quaternion.identity,0,null);
+        */
+        Debug.Log("Odaya Girildi.");
+>>>>>>> ca5d8644358bde059734326534b2caba8f37dd28
     }
 
     public override void OnLeftLobby()

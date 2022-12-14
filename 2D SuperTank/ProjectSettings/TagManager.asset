@@ -9,7 +9,11 @@ TagManager:
   - Bullet
   - camur
   - benzinAl
+<<<<<<< HEAD
   - player
+=======
+  - GasBar
+>>>>>>> ca5d8644358bde059734326534b2caba8f37dd28
   layers:
   - Default
   - TransparentFX
