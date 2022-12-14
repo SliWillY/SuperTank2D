@@ -833,7 +833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6fe3db338b12848b9800c13999f0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "sagl\xFDk": 100
+  "sagl\u0131k": 100
   canBari: {fileID: 5448962977950626955}
 --- !u!114 &939409142592648062
 MonoBehaviour:
