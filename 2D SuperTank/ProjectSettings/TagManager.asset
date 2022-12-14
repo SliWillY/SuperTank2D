@@ -4,13 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - mavitank
-  - turuncutank
   - bullet
   - player2
   - Bullet
   - camur
   - benzinAl
+  - player
   layers:
   - Default
   - TransparentFX

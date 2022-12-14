@@ -7,8 +7,7 @@ public class TankController : MonoBehaviour
 {
 
     PhotonView pw;
-    public float benzin =10000f;
-    public GameObject benzinBari;
+    gameManager gameManager;
 
     private Rigidbody2D rb2d;
     private Vector2 movementVector;
@@ -28,10 +27,10 @@ public class TankController : MonoBehaviour
 
     private void Awake()
     {
-        benzin = 10000f;
 
         pw = GetComponent<PhotonView>();
         rb2d = GetComponent<Rigidbody2D>();
+        gameManager = FindObjectOfType<gameManager>();
     }
 
     private void Start()
@@ -89,32 +88,7 @@ public class TankController : MonoBehaviour
         rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
 
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
-            benzin = benzin - 1;
-        }
-
-        if (benzin <= 0)
-        {
-            benzin = 0;
-            maxSpeed = 0;
-        }
+       
 
     }
 
@@ -148,17 +122,5 @@ public class TankController : MonoBehaviour
         maxSpeed = 180;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag=="benzinAl")
-        {
-            benzin = benzin + 3000;
-            Destroy(benzinAl);
-            if (benzin>=10000)
-            {
-                benzin = 10000;
-            }
-            
-        }
-    }
+   
 }

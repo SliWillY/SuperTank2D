@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 5668724910930264597}
   m_Layer: 0
   m_Name: player
-  m_TagString: player2
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -631,7 +631,7 @@ GameObject:
   - component: {fileID: 8090367954977915835}
   m_Layer: 0
   m_Name: tank
-  m_TagString: Player
+  m_TagString: player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -710,8 +710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a9f90fd10133a41b817ac3c56e9b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  benzin: 10000
-  benzinBari: {fileID: 0}
   maxSpeed: 180
   rotationSpeed: 200
   turretRotationSpeed: 150

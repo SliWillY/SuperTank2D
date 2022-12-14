@@ -738,8 +738,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a9f90fd10133a41b817ac3c56e9b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  benzin: 10000
-  benzinBari: {fileID: 0}
   maxSpeed: 180
   rotationSpeed: 200
   turretRotationSpeed: 150
