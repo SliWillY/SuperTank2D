@@ -28,9 +28,25 @@ public class TankController : MonoBehaviour
 
     private void Awake()
     {
-        
+        benzin = 10000f;
+
         pw = GetComponent<PhotonView>();
         rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        if (pw.IsMine)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                transform.position = new Vector3(-4, -1);
+            }
+            else if(!PhotonNetwork.IsMasterClient)
+            {
+                transform.position = new Vector3(-3, 0);
+            }
+        }
     }
 
 
@@ -40,8 +56,11 @@ public class TankController : MonoBehaviour
     private void Update()
     {
         
-        hareket();
-        atesEt();
+        
+            hareket();
+            atesEt();
+        
+      
 
     }
 

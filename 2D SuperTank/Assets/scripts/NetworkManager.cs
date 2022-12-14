@@ -7,7 +7,12 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    PhotonView pw;
 
+    private void Awake()
+    {
+        pw = GetComponent<PhotonView>();
+    }
     void Start()
     {
 
@@ -48,7 +53,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        //PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
+
+        
+        
+            PhotonNetwork.Instantiate("player", new Vector3(-4,-1), Quaternion.identity,0,null);
+       
+        
+            PhotonNetwork.Instantiate("player2", new Vector3(-3,-1), Quaternion.identity,0,null);
+
+        
+
+
         Debug.Log("Odaya Girildi.");
     }
 
