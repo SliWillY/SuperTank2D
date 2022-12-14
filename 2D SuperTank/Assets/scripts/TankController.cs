@@ -8,7 +8,7 @@ public class TankController : MonoBehaviour
 
     PhotonView pw;
     public float benzin =10000f;
-    public GameObject benzinBari;
+    public GameObject gasBar;
 
     private Rigidbody2D rb2d;
     private Vector2 movementVector;
@@ -17,7 +17,7 @@ public class TankController : MonoBehaviour
     public float turretRotationSpeed = 150;
     public Transform turretParent;
 
-
+    private Camera mainCamera;
     public GameObject bullet;
     public Transform atesNoktasi;
     public float mermiHizi;
@@ -32,10 +32,13 @@ public class TankController : MonoBehaviour
 
         pw = GetComponent<PhotonView>();
         rb2d = GetComponent<Rigidbody2D>();
+        gasBar = GameObject.FindGameObjectWithTag("GasBar");
+        mainCamera = Camera.main;
     }
 
     private void Start()
     {
+        /*
         if (pw.IsMine)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -47,6 +50,7 @@ public class TankController : MonoBehaviour
                 transform.position = new Vector3(-3, 0);
             }
         }
+        */
     }
 
 
@@ -55,13 +59,11 @@ public class TankController : MonoBehaviour
 
     private void Update()
     {
-        
-        
+        if (pw.IsMine)
+        {
             hareket();
             atesEt();
-        
-      
-
+        }     
     }
 
     //ateþ kýsmý
@@ -87,33 +89,36 @@ public class TankController : MonoBehaviour
 
         rb2d.velocity = (Vector2)transform.up * movementVector.y * maxSpeed * Time.fixedDeltaTime;
         rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
-
-
+        /*
+        Vector3 mouseWorldPos = mainCamera.WorldToScreenPoint(Input.mousePosition);
+        mouseWorldPos.z = 0;
+        HandleTurretMovement(mouseWorldPos);
+        */
         if (Input.GetKey(KeyCode.W))
         {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
+            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
             benzin = benzin - 1;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
+            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
             benzin = benzin - 1;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
+            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
             benzin = benzin - 1;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            benzinBari.transform.localScale = new Vector2(benzin / 10000, 1);
+            gasBar.transform.localScale = new Vector2(benzin / 10000, 1);
             benzin = benzin - 1;
         }
 
         if (benzin <= 0)
         {
             benzin = 0;
-            maxSpeed = 0;
+            maxSpeed = 50f;
         }
 
     }
@@ -141,24 +146,23 @@ public class TankController : MonoBehaviour
         {
             maxSpeed = 80;
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        maxSpeed = 180;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag=="benzinAl")
+        if (collision.gameObject.tag == "benzinAl")
         {
-            benzin = benzin + 3000;
-            Destroy(benzinAl);
-            if (benzin>=10000)
+            benzin =+ 3000;
+            if (benzin >= 10000)
             {
                 benzin = 10000;
             }
-            
+
+            PhotonNetwork.Destroy(collision.gameObject);
+
         }
+    }
+
+    
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        maxSpeed = 180;
     }
 }
