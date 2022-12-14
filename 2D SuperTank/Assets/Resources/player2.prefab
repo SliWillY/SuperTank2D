@@ -41,6 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3492318975983426777}
   - component: {fileID: 3492318975983426782}
+  - component: {fileID: 4220021095887813091}
+  - component: {fileID: 3588934294007756677}
   m_Layer: 0
   m_Name: tankTurret
   m_TagString: Untagged
@@ -115,6 +117,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4220021095887813091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3492318975983426776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &3588934294007756677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3492318975983426776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4220021095887813091}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3492318976604231222
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +329,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3492318976938623995}
-  - component: {fileID: 1728034744352856026}
   m_Layer: 0
   m_Name: player2
   m_TagString: player2
@@ -309,35 +349,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318977522938763}
-  - {fileID: 3492318977573685293}
-  - {fileID: 3492318977749728987}
-  - {fileID: 3492318976955247382}
   - {fileID: 3492318977900177580}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1728034744352856026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3492318976938623994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &3492318976955247377
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,17 +380,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318976955247377}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.024002537}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.79607785, y: 0.79607785, z: 0.79607785}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318976972040254}
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 3
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 966.4989, y: 543.13403}
+  m_AnchoredPosition: {x: 771.92395, y: 432.20978}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3492318976955247381
@@ -655,10 +670,11 @@ GameObject:
   - component: {fileID: 3492318977522938766}
   - component: {fileID: 3492318977522938761}
   - component: {fileID: 3492318977522938760}
+  - component: {fileID: 1829127355134630859}
   - component: {fileID: 393965513585561301}
   - component: {fileID: 7627001609547251825}
   m_Layer: 0
-  m_Name: tank
+  m_Name: tank2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -675,7 +691,10 @@ Transform:
   m_LocalPosition: {x: -3.16, y: 0.21, z: 0.024002537}
   m_LocalScale: {x: 1.2561586, y: 1.2561586, z: 1.2561586}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3492318977573685293}
+  - {fileID: 3492318977749728987}
+  - {fileID: 3492318976955247382}
   m_Father: {fileID: 3492318976938623995}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -761,6 +780,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "sagl\u0131k": 100
   canBari: {fileID: 3492318976972040255}
+--- !u!114 &1829127355134630859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3492318977522938762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 381ed113fe452d54fbcda1fe8e2670c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: atesEt
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMoveBody:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: HandleMoveBody
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnMoveTurret:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3492318977522938761}
+        m_TargetAssemblyTypeName: TankController, Assembly-CSharp
+        m_MethodName: HandleTurretMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &393965513585561301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,12 +902,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318977573685292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.16, y: 0.21, z: 0.024002537}
-  m_LocalScale: {x: 7.5369515, y: 7.5369515, z: 7.5369515}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 1
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3492318977573685330
 SpriteRenderer:
@@ -908,14 +985,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492318977749728986}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2, y: -0.064285964, z: 0.024002537}
-  m_LocalScale: {x: 1.2561586, y: 1.2561586, z: 1.2561586}
+  m_LocalPosition: {x: -0.031843085, y: -0.21835299, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3492318975983426777}
   - {fileID: 3492318975944271244}
-  m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 2
+  m_Father: {fileID: 3492318977522938763}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3492318977900177583
 GameObject:
@@ -948,7 +1025,7 @@ Transform:
   m_Children:
   - {fileID: 3492318976638406918}
   m_Father: {fileID: 3492318976938623995}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3492318977900177581
 MonoBehaviour:

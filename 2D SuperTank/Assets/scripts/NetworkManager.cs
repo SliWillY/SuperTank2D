@@ -53,18 +53,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        if (pw.IsMine)
+        {
+            PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("player2", Vector3.zero, Quaternion.identity);
+        }
 
-        
-        
-            PhotonNetwork.Instantiate("player", new Vector3(-4,-1), Quaternion.identity,0,null);
-       
-        
-            PhotonNetwork.Instantiate("player2", new Vector3(-3,-1), Quaternion.identity,0,null);
-
-        
-
-
-        Debug.Log("Odaya Girildi.");
+           
+            Debug.Log("Odaya Girildi.");
     }
 
     public override void OnLeftLobby()
