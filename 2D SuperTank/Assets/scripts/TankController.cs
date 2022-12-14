@@ -75,8 +75,8 @@ public class TankController : MonoBehaviour
             if (sayac <= 0)
             {
                 GameObject mermi = Instantiate(bullet, atesNoktasi.position, atesNoktasi.rotation);
-                mermi.GetComponent<Rigidbody2D>().velocity = atesNoktasi.up * mermiHizi;
-                Destroy(mermi, 5f);
+                //mermi.GetComponent<Rigidbody2D>().velocity = atesNoktasi.up * mermiHizi;
+                //Destroy(mermi, 5f);
                 sayac = 1.5f;
             }
 

@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
+    Rigidbody2D rg;
+    float speed = 15f;
 
     void Update()
     {
+       
+       transform.Translate(Time.deltaTime * Vector2.up * speed);
+        
         
     }
 
-
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag=="player2")
@@ -28,4 +29,5 @@ public class bullet : MonoBehaviour
 
         }
     }
+    */
 }
