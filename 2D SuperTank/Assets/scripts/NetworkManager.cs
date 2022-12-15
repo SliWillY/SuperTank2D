@@ -7,11 +7,13 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    PhotonView pw;
+    PhotonView pv;
+    [SerializeField] GameObject spawn1;
+    [SerializeField] GameObject spawn2;
 
     private void Awake()
     {
-        pw = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
     }
     void Start()
     {
@@ -55,13 +57,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("player3", new Vector3(-4, -1), Quaternion.identity, 0, null);
-            Camera.main.gameObject.SetActive(true);
+            PhotonNetwork.Instantiate("player3", spawn1.transform.position, Quaternion.identity, 0, null);
+            
         }
         else
         {
-            PhotonNetwork.Instantiate("player2", new Vector3(-3, -1), Quaternion.identity, 0, null);
-            Camera.main.gameObject.SetActive(true);
+            PhotonNetwork.Instantiate("player2", spawn2.transform.position, Quaternion.identity, 0, null);
+        
         }
         /*
         PhotonNetwork.Instantiate("player", new Vector3(-4,-1), Quaternion.identity,0,null);             

@@ -23,27 +23,37 @@ public class saglik : MonoBehaviour
         healthBar.value = health;
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "bullet")
         {
-            if (!pv.IsMine)
+            if (pv.IsMine)
             {
-                return;
+                pv.RPC("healthdicrease", RpcTarget.AllViaServer);
+
+                if (health <= 0)
+                {
+                    PhotonNetwork.Destroy(gameObject);
+                }
             }
 
-            pv.RPC("healthdicrease", RpcTarget.All);
-            if (health <= 0)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
+            //StartCoroutine(waitSeconds());
+
+            //if (collision.gameObject.GetComponent<PhotonView>().IsMine)
+            //{
+                //PhotonNetwork.Destroy(collision.gameObject);
+            //}
         }
     }
 
     [PunRPC]
     void healthdicrease()
     {
-        health = health - 20;
+        health -= 20;
+    }
+
+    IEnumerator waitSeconds()
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 }

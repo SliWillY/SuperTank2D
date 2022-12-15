@@ -27,27 +27,4 @@ public class bullet : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (pv.IsMine)
-        {
-            PhotonNetwork.Destroy(gameObject);
-        }
-    }
-    /*
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag=="player2")
-        {
-            Destroy(this.gameObject);
-        }
-
-        if (collision.gameObject.tag!=null && collision.gameObject.tag!="camur")
-        {
-            Destroy(this.gameObject);
-
-        }
-    }
-    */
 }

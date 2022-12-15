@@ -9,11 +9,13 @@ public class TankController : MonoBehaviour
     PhotonView pv;
     [SerializeField] float Feul = 10000f;
     [SerializeField] GameObject feulBar;
+    [SerializeField] Animator animator;
 
     private Rigidbody2D rigidBody;
     private Vector2 movementVector;
-    public float maxSpeed = 180;
-    public float rotationSpeed = 100;
+    public float maxSpeed = 250;
+    [SerializeField] float speedAftertakeFeul = 250;
+    public float rotationSpeed = 130;
     public float turretRotationSpeed = 150;
     [SerializeField] Transform turretParent;
     [SerializeField] private GameObject cinemachineCam;
@@ -29,6 +31,7 @@ public class TankController : MonoBehaviour
         pv = GetComponent<PhotonView>();
         rigidBody = GetComponent<Rigidbody2D>();
         feulBar = GameObject.FindGameObjectWithTag("GasBar");
+        animator = animator.gameObject.GetComponent<Animator>();
         if (pv.IsMine)
         {
             cinemachineCam.SetActive(true);
@@ -87,11 +90,31 @@ public class TankController : MonoBehaviour
         rigidBody.velocity = (Vector2)transform.up * movementVector.y * maxSpeed * Time.fixedDeltaTime;
         rigidBody.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D))
         {
             feulBar.transform.localScale = new Vector2(Feul / 10000, 1);
             Feul -= Time.deltaTime * 120;
+
+            animator.SetBool("isForward", true);
         }
+        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.D))
+        {
+            animator.SetBool("isForward", false);
+
+        }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)){
+            feulBar.transform.localScale = new Vector2(Feul / 10000, 1);
+            Feul -= Time.deltaTime * 120;
+
+            animator.SetBool("isBack", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("isBack", false);
+
+        }
+
 
         if (Feul <= 0)
         {
@@ -120,9 +143,13 @@ public class TankController : MonoBehaviour
     {
         if (collision.gameObject.tag == "camur")
         {
-            maxSpeed = 80;
+            maxSpeed = 140;
         }
+       
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.tag == "benzinAl")
         {
             Feul += 3000;
@@ -137,9 +164,9 @@ public class TankController : MonoBehaviour
         }
     }
 
-    
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        maxSpeed = 180;
+        maxSpeed = speedAftertakeFeul;
     }
 }
