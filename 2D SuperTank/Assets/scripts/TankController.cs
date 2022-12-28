@@ -24,7 +24,7 @@ public class TankController : MonoBehaviour
     public float bulletSpeed;
     public float fireRate;
 
-
+    bool rateOfFireDecreased = false;
 
     private void Awake()
     {
@@ -78,6 +78,13 @@ public class TankController : MonoBehaviour
             {
                 GameObject _bullet = PhotonNetwork.Instantiate("Bulleto", firePos.position, firePos.rotation);
                 fireRate = 1.5f;
+
+                if (rateOfFireDecreased == true)
+                {
+                    fireRate = 0.5f;
+
+                    StartCoroutine(bulletPower());
+                }
             }
 
         }
@@ -141,7 +148,7 @@ public class TankController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "camur")
+        if (collision.gameObject.CompareTag("camur"))
         {
             maxSpeed = 140;
         }
@@ -150,7 +157,7 @@ public class TankController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "benzinAl")
+        if (collision.gameObject.CompareTag("benzinAl"))
         {
             Feul += 3000;
             if (Feul >= 10000)
@@ -162,11 +169,24 @@ public class TankController : MonoBehaviour
                 PhotonNetwork.Destroy(collision.gameObject);
             }
         }
+
+        if (collision.gameObject.CompareTag("bulletPower"))
+        {
+            rateOfFireDecreased = true;
+            PhotonNetwork.Destroy(collision.gameObject);
+        }
     }
 
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         maxSpeed = speedAftertakeFeul;
+    }
+    IEnumerator bulletPower()
+    {
+        yield return new WaitForSeconds(3f);
+        rateOfFireDecreased = false;
+
+        fireRate = 1.5f;
     }
 }

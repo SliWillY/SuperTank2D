@@ -12,6 +12,7 @@ TagManager:
   - camur
   - benzinAl
   - GasBar
+  - bulletPower
   layers:
   - Default
   - TransparentFX
