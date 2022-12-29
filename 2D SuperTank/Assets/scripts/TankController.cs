@@ -81,7 +81,7 @@ public class TankController : MonoBehaviour
 
                 if (rateOfFireDecreased == true)
                 {
-                    fireRate = 0.5f;
+                    fireRate = 0.2f;
 
                     StartCoroutine(bulletPower());
                 }
