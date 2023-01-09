@@ -13,6 +13,8 @@ TagManager:
   - benzinAl
   - GasBar
   - bulletPower
+  - mud
+  - fuel
   layers:
   - Default
   - TransparentFX

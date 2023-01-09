@@ -7,8 +7,8 @@ public class TankController : MonoBehaviour
 {
 
     PhotonView pv;
-    [SerializeField] float Feul = 10000f;
-    [SerializeField] GameObject feulBar;
+    [SerializeField] float Fuel = 10000f;
+    [SerializeField] GameObject fuelBar;
     [SerializeField] Animator animator;
 
     private Rigidbody2D rigidBody;
@@ -23,6 +23,8 @@ public class TankController : MonoBehaviour
     public Transform firePos;
     public float bulletSpeed;
     public float fireRate;
+    [SerializeField] private int numShots = 8; // Number of shots to fire
+    private float spreadAngle = 30.0f; // Spread angle for the shots
 
     bool rateOfFireDecreased = false;
 
@@ -30,7 +32,7 @@ public class TankController : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
         rigidBody = GetComponent<Rigidbody2D>();
-        feulBar = GameObject.FindGameObjectWithTag("GasBar");
+        fuelBar = GameObject.FindGameObjectWithTag("GasBar");
         animator = animator.gameObject.GetComponent<Animator>();
         if (pv.IsMine)
         {
@@ -68,7 +70,7 @@ public class TankController : MonoBehaviour
         }     
     }
 
-    //ateþ kýsmý
+    //fire command
     public void Fire()
     {
         fireRate -= Time.deltaTime;
@@ -76,20 +78,29 @@ public class TankController : MonoBehaviour
         {
             if (fireRate <= 0)
             {
-                GameObject _bullet = PhotonNetwork.Instantiate("Bulleto", firePos.position, firePos.rotation);
-                fireRate = 1.5f;
+                //GameObject _bullet = PhotonNetwork.Instantiate("Bulleto", firePos.position, firePos.rotation);
+                for (int i = 0; i < numShots; i++)
+                {
+                    // Calculate a random direction for the shot
+                    float angle = Random.Range(-spreadAngle / 2, spreadAngle / 2);
+                    Quaternion rot = Quaternion.Euler(0, 0, angle);
 
-                if (rateOfFireDecreased == true)
+                    // Instantiate the bullet in the random direction
+                    GameObject _bullet = PhotonNetwork.Instantiate("Bulleto", firePos.position, rot * firePos.rotation);
+                    fireRate = 0.5f;
+                }
+                
+                /*if (rateOfFireDecreased == true)
                 {
                     fireRate = 0.2f;
 
                     StartCoroutine(bulletPower());
-                }
+                }*/
             }
 
         }
     }
-    //hareket kýsmý
+    //movment command
 
     void Move()
     {
@@ -99,8 +110,8 @@ public class TankController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D))
         {
-            feulBar.transform.localScale = new Vector2(Feul / 10000, 1);
-            Feul -= Time.deltaTime * 120;
+            fuelBar.transform.localScale = new Vector2(Fuel / 10000, 1);
+            Fuel -= Time.deltaTime * 120;
 
             animator.SetBool("isForward", true);
         }
@@ -111,8 +122,8 @@ public class TankController : MonoBehaviour
         }
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)){
-            feulBar.transform.localScale = new Vector2(Feul / 10000, 1);
-            Feul -= Time.deltaTime * 120;
+            fuelBar.transform.localScale = new Vector2(Fuel / 10000, 1);
+            Fuel -= Time.deltaTime * 120;
 
             animator.SetBool("isBack", true);
         }
@@ -122,10 +133,13 @@ public class TankController : MonoBehaviour
 
         }
 
+        //Vector3 playerVelocity = rigidBody.velocity;
+        float playerSpeed = rigidBody.velocity.magnitude;
+        Debug.Log(playerSpeed);
 
-        if (Feul <= 0)
+        if (Fuel <= 0)
         {
-            Feul = 0;
+            Fuel = 0;
             maxSpeed = 50f;
         }
 
@@ -148,7 +162,7 @@ public class TankController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("camur"))
+        if (collision.gameObject.CompareTag("mud"))
         {
             maxSpeed = 140;
         }
@@ -157,12 +171,12 @@ public class TankController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("benzinAl"))
+        if (collision.gameObject.CompareTag("fuel"))
         {
-            Feul += 3000;
-            if (Feul >= 10000)
+            Fuel += 3000;
+            if (Fuel >= 10000)
             {
-                Feul = 10000;
+                Fuel = 10000;
             }
             if (PhotonNetwork.IsMasterClient)
             {
@@ -186,7 +200,6 @@ public class TankController : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         rateOfFireDecreased = false;
-
         fireRate = 1.5f;
     }
 }

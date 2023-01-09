@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6883133450753753069}
   - component: {fileID: 6883133450753753068}
   m_Layer: 0
-  m_Name: Feul
-  m_TagString: benzinAl
+  m_Name: Fuel
+  m_TagString: fuel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class healthSystem : MonoBehaviour
+public class saglik : MonoBehaviour
 {
 
     public int health = 100;
