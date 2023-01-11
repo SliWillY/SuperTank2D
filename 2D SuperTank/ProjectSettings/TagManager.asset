@@ -12,6 +12,8 @@ TagManager:
   - camur
   - benzinAl
   - GasBar
+  - powerArmor
+  - armor
   layers:
   - Default
   - TransparentFX

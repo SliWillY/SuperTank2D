@@ -24,10 +24,13 @@ public class TankController : MonoBehaviour
     public float bulletSpeed;
     public float fireRate;
 
+    powerArmor powerArmor;
+    public GameObject armor;
 
 
     private void Awake()
     {
+        powerArmor = FindObjectOfType<powerArmor>();
         pv = GetComponent<PhotonView>();
         rigidBody = GetComponent<Rigidbody2D>();
         feulBar = GameObject.FindGameObjectWithTag("GasBar");
@@ -162,8 +165,25 @@ public class TankController : MonoBehaviour
                 PhotonNetwork.Destroy(collision.gameObject);
             }
         }
+
+        if (collision.gameObject.tag=="powerArmor")
+        {
+            Destroy(collision.gameObject);
+            armor.SetActive(true);
+            StartCoroutine(waitSeconds());
+
+        }
+
+       
     }
 
+    
+    IEnumerator waitSeconds()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        armor.SetActive(false);
+    }
+    
 
     private void OnTriggerExit2D(Collider2D collision)
     {

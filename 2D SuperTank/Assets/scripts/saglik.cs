@@ -47,7 +47,7 @@ public class saglik : MonoBehaviour
     }
 
     [PunRPC]
-    void healthdicrease()
+    public void healthdicrease()
     {
         health -= 20;
     }
