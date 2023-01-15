@@ -82,7 +82,7 @@ public class TankController : MonoBehaviour
                 for (int i = 0; i < numShots; i++)
                 {
                     // Calculate a random direction for the shot
-                    float angle = Random.Range(-spreadAngle / 2, spreadAngle / 2);
+                    float angle = Random.Range(-spreadAngle * 0.5f, spreadAngle * 0.5f);
                     Quaternion rot = Quaternion.Euler(0, 0, angle);
 
                     // Instantiate the bullet in the random direction

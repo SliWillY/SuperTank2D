@@ -1,59 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Photon.Pun;
+using UnityEngine;
 
-public class saglik : MonoBehaviour
+public class HealthSystem : MonoBehaviour
 {
+    public Tank tankScriObj;
+    public GameObject healthBarOgj;
+    private Slider healthBar;
+    public Gradient gradient;
+    public Image healthBarFill;
 
-    public int health = 100;
-    public Slider healthBar;
-    private PhotonView pv;
-
-
-
-    void Start()
+    public float tankMaxHealth;
+    public float tankCurrentHealth;
+    
+    private void Awake()
     {
-        pv = GetComponent<PhotonView>();
+        healthBar = healthBarOgj.GetComponent<Slider>();
+
+        tankMaxHealth = tankScriObj.maxHealth;
+
+        healthBar.value = tankMaxHealth;
+        tankCurrentHealth = tankMaxHealth;
     }
 
-    void Update()
+    public void SetMaxHealth()
     {
-        healthBar.value = health;
+        healthBarFill.color = gradient.Evaluate(healthBar.normalizedValue);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void SetHealth(float newHealth)
     {
-        if (collision.gameObject.tag == "bullet")
-        {
-            if (pv.IsMine)
-            {
-                pv.RPC("healthdicrease", RpcTarget.AllViaServer);
-
-                if (health <= 0)
-                {
-                    PhotonNetwork.Destroy(gameObject);
-                }
-            }
-
-            //StartCoroutine(waitSeconds());
-
-            //if (collision.gameObject.GetComponent<PhotonView>().IsMine)
-            //{
-                //PhotonNetwork.Destroy(collision.gameObject);
-            //}
-        }
-    }
-
-    [PunRPC]
-    void healthdicrease()
-    {
-        health -= 20;
-    }
-
-    IEnumerator waitSeconds()
-    {
-        yield return new WaitForSeconds(0.5f);
+        tankCurrentHealth += newHealth;
+        healthBar.value = tankCurrentHealth;
+        healthBarFill.color = gradient.Evaluate(healthBar.normalizedValue);
     }
 }

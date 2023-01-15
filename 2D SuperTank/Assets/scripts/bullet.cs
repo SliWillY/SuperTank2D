@@ -5,40 +5,91 @@ using Photon.Pun;
 
 public class bullet : MonoBehaviour
 {
-    Rigidbody2D rg;
-    PhotonView pv;
-    float speed;
-    float _time;
-    float slowDownAmount = 40f;
-    Vector3 bulletVelocity;
+    public Tank tankScriObj;
 
+    PhotonView pv;
+
+    float _time;
+
+    float bulletSpeed;
+    float bulletDamage;
+    float damageMultiplayer;
+    float timeToMultiplayDamage;
+    bool slowDownBullet;
+    float bulletSlowDownAmount;
+    float timeToStartSlowDown;
+    int bulletSpeedRandomness;
+
+    private void Awake()
+    {
+        bulletSpeed = tankScriObj.bulletSpeed;
+        bulletDamage = tankScriObj.bulletDamage;
+        damageMultiplayer = tankScriObj.damageMultiplayer;
+        timeToMultiplayDamage = tankScriObj.timeToMultiplayDamage;
+        slowDownBullet = tankScriObj.slowDownBullet;
+        bulletSlowDownAmount = tankScriObj.bulletSlowDownAmount;
+        timeToStartSlowDown = tankScriObj.timeToStartSlowDown;
+        bulletSpeedRandomness = tankScriObj.bulletSpeedRandomness;  
+
+    }
     void Start()
     {
         pv = GetComponent<PhotonView>();
-        speed = Random.Range(18.0f, 22.0f); // Set a random speed for the bullet
+        bulletSpeed = Random.Range(bulletSpeed - bulletSpeedRandomness, bulletSpeed + bulletSpeedRandomness); // Set a random speed for the bullet
     }
 
     void Update()
     {
         
-        transform.Translate(Time.deltaTime * Vector2.up * speed);
+        transform.Translate(Time.deltaTime * Vector2.up * bulletSpeed);
 
-        _time += Time.deltaTime;
-        if (_time > 0.15f)
+        if (slowDownBullet)
         {
-            if (pv.IsMine)
+            if (_time > timeToStartSlowDown)
             {
-                // Slow down the bullet over time
-                speed -= slowDownAmount * Time.deltaTime;
-                if (speed < 0)
+                /*if (pv.IsMine)
                 {
-                    PhotonNetwork.Destroy(gameObject);
-                }
+                    // Slow down the bullet over time
+                    bulletSpeed -= bulletSlowDownAmount * Time.deltaTime;
+                    if (bulletSpeed < 0)
+                    {
+                        PhotonNetwork.Destroy(gameObject);
+                    }
+                }*/
+
+                bulletSpeed -= bulletSlowDownAmount * Time.deltaTime;
+                
             }
         }
+        else
+        {
+
+        }
+
+        if (timeToMultiplayDamage >= _time)
+        {
+            bulletDamage += damageMultiplayer;
+        }
+
+        if (bulletSpeed < 0)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
+
+        _time += Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(gameObject);
     }
 }
-    
+
 
 
 

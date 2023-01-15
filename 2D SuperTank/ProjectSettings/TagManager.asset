@@ -15,6 +15,7 @@ TagManager:
   - bulletPower
   - mud
   - fuel
+  - VirtualCamera
   layers:
   - Default
   - TransparentFX
