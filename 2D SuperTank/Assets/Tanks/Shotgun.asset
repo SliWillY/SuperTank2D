@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c389e3403dcc27245b12f34822564f5a, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 7
   maxHealth: 100
   rotSpeed: 13
   turretRotSpeed: 3
@@ -22,12 +22,3 @@ MonoBehaviour:
   isOneShot: 0
   bulletSpreadAngle: 20
   bulletAmountPerShot: 8
-  bulletSpeed: 20
-  bulletDamage: 5
-  damageMultiplayer: -2
-  timeToMultiplayDamage: 1
-  slowDownBullet: 1
-  bulletSlowDownAmount: 40
-  bulletSpeedRandomness: 2
-  timeToStartSlowDown: 0.149
-  bulletObject: {fileID: 2176872990745778475, guid: 379a423425d7e1742bf0f9a868bd823e, type: 3}

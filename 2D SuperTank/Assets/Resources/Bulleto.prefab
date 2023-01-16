@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889cb043806e332468ec78e9c3f3fbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankScriObj: {fileID: 11400000, guid: 231ee8a82037266458823a63a033375e, type: 2}
+  bulletScriObj: {fileID: 11400000, guid: c88dda6721e626c4a8acf7117d56b523, type: 2}
 --- !u!135 &7147317735310717138
 SphereCollider:
   m_ObjectHideFlags: 0

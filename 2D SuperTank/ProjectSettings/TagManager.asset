@@ -16,6 +16,8 @@ TagManager:
   - mud
   - fuel
   - VirtualCamera
+  - BoostBar
+  - HealthBar
   layers:
   - Default
   - TransparentFX

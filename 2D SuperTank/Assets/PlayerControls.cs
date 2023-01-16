@@ -286,7 +286,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""cc979aee-dd48-44fa-9dc1-73451705cbd8"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
                     ""action"": ""Fire"",
                     ""isComposite"": false,

@@ -9,10 +9,12 @@ using Photon.Pun;
 public class Controller : MonoBehaviour
 {
     public Tank tankScriObj;
+    public Bullet bulletScriObj;
     public HealthSystem healthSystem;
 
     [SerializeField] private GameObject turret;
     [SerializeField] private Transform bulletFirePos;
+    [SerializeField] private Animator animator;
 
     PlayerControls playerInput;
     Rigidbody2D rb;
@@ -20,9 +22,13 @@ public class Controller : MonoBehaviour
     CharacterController charaterController;
     GameObject virtualCameraObj;
     CinemachineVirtualCamera virtualCamera;
+    GameObject boostBarObj;
+    Slider boostBar;
 
     Vector2 currentMovmentInput;
     Vector2 currentMovment;
+    Vector2 currentBoostMovment;
+    float boostMultiplayer;
 
     Vector2 currentTurretInput;
     Vector2 currentTurret;
@@ -34,6 +40,7 @@ public class Controller : MonoBehaviour
     bool isUltimatePressed;
 
     float tankCurrentHealth;
+    float boostBarValue;
 
     float nextFireTime; // the time when the next bullet can be fired
     int bulletsLeft; // the number of bullets left in the magazine
@@ -50,11 +57,14 @@ public class Controller : MonoBehaviour
     private bool IsOneShot;
     private float bulletSpreadAngle;
     private int bulletAmountPerShot;
+    private int isMovingHash;
 
     private GameObject bulletObject;
 
     public void Awake()
     {
+        boostBarObj = GameObject.FindGameObjectWithTag("BoostBar");
+
         //Cinamachine Camera situp
         virtualCameraObj = GameObject.FindGameObjectWithTag("VirtualCamera");
         virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
@@ -64,11 +74,18 @@ public class Controller : MonoBehaviour
         playerInput = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         pv = GetComponent<PhotonView>();
+        boostBar = boostBarObj.GetComponent<Slider>();
         charaterController = GetComponent<CharacterController>();
 
+        //Local variables
+        boostMultiplayer = 5.0f;
+        boostBarValue = boostBar.value;
         bulletsLeft = magazineSize;
         nextFireTime = 0f;
         reloading = false;
+
+        // hashing animator parameters
+        isMovingHash = Animator.StringToHash("isMove");
 
         //Assign scribtableObj values to local
         tankSpeed = tankScriObj.speed;
@@ -81,7 +98,7 @@ public class Controller : MonoBehaviour
         IsOneShot = tankScriObj.isOneShot;
         bulletSpreadAngle = tankScriObj.bulletSpreadAngle;
         bulletAmountPerShot = tankScriObj.bulletAmountPerShot;
-        bulletObject = tankScriObj.bulletObject;
+        bulletObject = bulletScriObj.bulletObject;
 
         //Input Invoke
         if (pv.IsMine)
@@ -115,10 +132,33 @@ public class Controller : MonoBehaviour
 
         HandleRotation();
         HandleFire();
-        //CharacterController
-        charaterController.Move(currentMovment * Time.deltaTime);
+        HandleAnimation();
 
-        
+        boostBarValue = Mathf.Clamp(boostBarValue, 1.0f, 100.0f);
+
+        //CharacterController
+        if (isBoostPressed) 
+        { 
+            boostBarValue -= Time.deltaTime * 50.0f;
+            boostBar.value = boostBarValue;
+
+            if (boostBarValue > 1)
+            {
+                charaterController.Move(currentBoostMovment * Time.deltaTime);
+            }
+            else
+            {
+                charaterController.Move(currentMovment * Time.deltaTime);
+            }
+        }
+        else 
+        { 
+            charaterController.Move(currentMovment * Time.deltaTime);
+        }
+
+        if(boostBarValue < 100)
+        boostBarValue += Time.deltaTime * 10.0f;
+        boostBar.value = boostBarValue;
     }
 
     void HandleRotation()
@@ -195,11 +235,26 @@ public class Controller : MonoBehaviour
         }
     }
 
+    void HandleAnimation()
+    {
+        bool isMoving = animator.GetBool(isMovingHash);
+
+        if(isMovmentPressed && !isMoving)
+        {
+            animator.SetBool("isMove", true);
+        }
+        else if(!isMovmentPressed && isMoving){
+            animator.SetBool("isMove", false);
+        }
+    }
+
     void OnMove(InputAction.CallbackContext ctx)
     {
         currentMovmentInput = ctx.ReadValue<Vector2>();
         currentMovment.x = currentMovmentInput.x * tankSpeed; 
         currentMovment.y = currentMovmentInput.y * tankSpeed;
+        currentBoostMovment.x = (currentMovmentInput.x * tankSpeed) * boostMultiplayer;
+        currentBoostMovment.y = (currentMovmentInput.y * tankSpeed) * boostMultiplayer;
 
         isMovmentPressed = currentMovmentInput.x != 0 || currentMovmentInput.y != 0;
         
@@ -214,7 +269,7 @@ public class Controller : MonoBehaviour
     }
     void OnBoost(InputAction.CallbackContext ctx)
     {
-
+        isBoostPressed = ctx.ReadValueAsButton();
     }
     void OnAbility(InputAction.CallbackContext ctx)
     {
