@@ -140,6 +140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletScriObj: {fileID: 11400000, guid: c88dda6721e626c4a8acf7117d56b523, type: 2}
+  healthSystem: {fileID: 0}
+  hitBullet: {fileID: 9122776684074021729, guid: a0a2fcd0c8e3b324dad32d90c0b3dc86, type: 3}
 --- !u!135 &7147317735310717138
 SphereCollider:
   m_ObjectHideFlags: 0

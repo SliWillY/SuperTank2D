@@ -17,7 +17,7 @@ MonoBehaviour:
   damageMultiplayer: -2
   timeToMultiplayDamage: 0.3
   slowDownBullet: 1
-  bulletSlowDownAmount: 40
+  bulletSlowDownAmount: 30
   bulletSpeedRandomness: 2
   timeToStartSlowDown: 0.149
   bulletObject: {fileID: 2176872990745778475, guid: 379a423425d7e1742bf0f9a868bd823e, type: 3}

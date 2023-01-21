@@ -9,6 +9,8 @@ public class BulletManager : MonoBehaviour
     public Bullet bulletScriObj;
     public HealthSystem healthSystem;
 
+    [SerializeField] private GameObject hitBullet;
+
     PhotonView pv;
 
     float _time;
@@ -71,7 +73,7 @@ public class BulletManager : MonoBehaviour
 
         if (bulletSpeed < 0)
         {
-            PhotonNetwork.Destroy(gameObject);
+            BulletDestroying(hitBullet);
         }
     }
 
@@ -91,11 +93,12 @@ public class BulletManager : MonoBehaviour
         }
         //Debug.Log(bulletDamage);
         //Debug.Log(_time);
-        Destroy(gameObject);
+        BulletDestroying(hitBullet);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void BulletDestroying(GameObject ani)
     {
+        Instantiate(ani, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

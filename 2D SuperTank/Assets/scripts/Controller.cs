@@ -299,4 +299,21 @@ public class Controller : MonoBehaviour
     {
         playerInput.Player.Disable();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("mud"))
+        {
+            tankSpeed = 4f;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("mud"))
+        {
+            tankSpeed = 7f;
+        }
+    }
+
 }
