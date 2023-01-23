@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
+using Photon.Pun;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -11,16 +12,19 @@ public class HealthSystem : MonoBehaviour
     GameObject healthBarObj;
     Slider healthBar;
     Image healthBarFill;
-    [SerializeField] private Gradient gradient;
+    [SerializeField] Gradient gradient;
+    PhotonView pv;
 
     float tankMaxHealth;
     float tankCurrentHealth;
 
     private void Awake()
     {
+
         healthBarObj = GameObject.FindGameObjectWithTag("HealthBar");
         healthBar = healthBarObj.GetComponent<Slider>();
         healthBarFill = healthBarObj.transform.Find("Fill").GetComponent<Image>();
+        pv = GetComponent<PhotonView>();
 
         tankMaxHealth = tankScriObj.maxHealth;
         tankCurrentHealth = tankMaxHealth;
@@ -42,6 +46,7 @@ public class HealthSystem : MonoBehaviour
         healthBar.value = tankCurrentHealth;
         healthBarFill.color = gradient.Evaluate(healthBar.normalizedValue);
 
-        if (tankCurrentHealth <= 0) { Destroy(gameObject); }
+        if (!pv.IsMine) { return; }
+        if (tankCurrentHealth <= 0) { PhotonNetwork.Destroy(gameObject); }
     }
 }

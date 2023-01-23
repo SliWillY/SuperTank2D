@@ -15,6 +15,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject turret;
     [SerializeField] private Transform bulletFirePos;
     [SerializeField] private Animator animator;
+    [SerializeField] private string bulletName;
+
 
     PlayerControls playerInput;
     Rigidbody2D rb;
@@ -50,6 +52,8 @@ public class Controller : MonoBehaviour
     private float tankMaxHealth;
     private float tankRotSpeed;
     private float turretRotSpeed;
+    private float tankSpeedInMud;
+    private float tankOriginalSpeed;
 
     private float fireRate;
     private int magazineSize;
@@ -77,13 +81,6 @@ public class Controller : MonoBehaviour
         boostBar = boostBarObj.GetComponent<Slider>();
         charaterController = GetComponent<CharacterController>();
 
-        //Local variables
-        boostMultiplayer = 5.0f;
-        boostBarValue = boostBar.value;
-        bulletsLeft = magazineSize;
-        nextFireTime = 0f;
-        reloading = false;
-
         // hashing animator parameters
         isMovingHash = Animator.StringToHash("isMove");
 
@@ -99,6 +96,15 @@ public class Controller : MonoBehaviour
         bulletSpreadAngle = tankScriObj.bulletSpreadAngle;
         bulletAmountPerShot = tankScriObj.bulletAmountPerShot;
         bulletObject = bulletScriObj.bulletObject;
+
+        //Local variables
+        boostMultiplayer = 5.0f;
+        boostBarValue = boostBar.value;
+        tankOriginalSpeed = tankSpeed;
+        tankSpeedInMud = tankSpeed - 4f;
+        bulletsLeft = magazineSize;
+        nextFireTime = 0f;
+        reloading = false;
 
         //Input Invoke
         if (pv.IsMine)
@@ -208,7 +214,7 @@ public class Controller : MonoBehaviour
             {
                 if (IsOneShot)
                 {
-                    Instantiate(bulletObject, bulletFirePos.position, bulletFirePos.rotation);
+                    PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, bulletFirePos.rotation);
                 }
                 else
                 {
@@ -219,7 +225,7 @@ public class Controller : MonoBehaviour
                         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
                         // Instantiate the bullet in the random direction
-                        Instantiate(bulletObject, bulletFirePos.position, rot * bulletFirePos.rotation);
+                        PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, rot * bulletFirePos.rotation);
                         //fireRate = 0.5f;
                     }
                 }               
@@ -304,7 +310,7 @@ public class Controller : MonoBehaviour
     {
         if (other.CompareTag("mud"))
         {
-            tankSpeed = 4f;
+            tankSpeed = tankSpeedInMud;
         }
     }
 
@@ -312,7 +318,7 @@ public class Controller : MonoBehaviour
     {
         if (other.CompareTag("mud"))
         {
-            tankSpeed = 7f;
+            tankSpeed = tankOriginalSpeed;
         }
     }
 

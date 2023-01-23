@@ -66,14 +66,11 @@ public class BulletManager : MonoBehaviour
                 
             }
         }
-        else
-        {
-
-        }
 
         if (bulletSpeed < 0)
         {
-            BulletDestroying(hitBullet);
+            BulletDestroying();
+            //BulletDestroying(hitBullet);
         }
     }
 
@@ -91,15 +88,22 @@ public class BulletManager : MonoBehaviour
             other.GetComponent<HealthSystem>().SetHealth(bulletDamage);
 
         }
-        //Debug.Log(bulletDamage);
-        //Debug.Log(_time);
-        BulletDestroying(hitBullet);
+
+        BulletDestroying();
+
+        //BulletDestroying(hitBullet);
     }
 
-    void BulletDestroying(GameObject ani)
+    private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(ani, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        BulletDestroying();
+    }
+    void BulletDestroying()
+    {
+        if (!pv.IsMine) { return;}
+
+        PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
+        PhotonNetwork.Destroy(gameObject);
     }
 }
 

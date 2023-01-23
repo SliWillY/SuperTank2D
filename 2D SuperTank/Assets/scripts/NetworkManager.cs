@@ -57,12 +57,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("player3", spawn1.transform.position, Quaternion.identity, 0, null);
+            PhotonNetwork.Instantiate("Tank_shotgun", transform.position, Quaternion.identity, 0, null);
             
         }
         else
         {
-            PhotonNetwork.Instantiate("player2", spawn2.transform.position, Quaternion.identity, 0, null);
+            PhotonNetwork.Instantiate("player2", transform.position, Quaternion.identity, 0, null);
         
         }
         /*
