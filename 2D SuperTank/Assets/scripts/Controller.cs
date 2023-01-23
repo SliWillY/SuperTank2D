@@ -62,27 +62,32 @@ public class Controller : MonoBehaviour
     private float bulletSpreadAngle;
     private int bulletAmountPerShot;
     private int isMovingHash;
+    private int tireSpeedHash;
 
     private GameObject bulletObject;
 
     public void Awake()
     {
-        boostBarObj = GameObject.FindGameObjectWithTag("BoostBar");
+        //check if PhotonView is mine
+        pv = GetComponent<PhotonView>();
+        if (!pv.IsMine) { return; }
 
-        //Cinamachine Camera situp
-        virtualCameraObj = GameObject.FindGameObjectWithTag("VirtualCamera");
-        virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
-        virtualCamera.Follow = this.transform;
+        boostBarObj = GameObject.FindGameObjectWithTag("BoostBar");
 
         //GetComponent
         playerInput = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
-        pv = GetComponent<PhotonView>();
         boostBar = boostBarObj.GetComponent<Slider>();
         charaterController = GetComponent<CharacterController>();
 
         // hashing animator parameters
         isMovingHash = Animator.StringToHash("isMove");
+        tireSpeedHash = Animator.StringToHash("tireSpeed");
+
+        //Cinamachine Camera situp
+        virtualCameraObj = GameObject.FindGameObjectWithTag("VirtualCamera");
+        virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
+        virtualCamera.Follow = this.transform;
 
         //Assign scribtableObj values to local
         tankSpeed = tankScriObj.speed;
@@ -98,7 +103,7 @@ public class Controller : MonoBehaviour
         bulletObject = bulletScriObj.bulletObject;
 
         //Local variables
-        boostMultiplayer = 5.0f;
+        boostMultiplayer = 2.0f;
         boostBarValue = boostBar.value;
         tankOriginalSpeed = tankSpeed;
         tankSpeedInMud = tankSpeed - 4f;
@@ -107,21 +112,18 @@ public class Controller : MonoBehaviour
         reloading = false;
 
         //Input Invoke
-        if (pv.IsMine)
-        {
-            playerInput.Player.Move.started += OnMove;
-            playerInput.Player.Move.canceled += OnMove;
-            playerInput.Player.Move.performed += OnMove;
-            playerInput.Player.Fire.started += OnFire;
-            playerInput.Player.Fire.canceled += OnFire;
-            playerInput.Player.Fire.performed += OnFire;
-            playerInput.Player.Boost.started += OnBoost;
-            playerInput.Player.Boost.canceled += OnBoost;
-            playerInput.Player.Ability.started += OnAbility;
-            playerInput.Player.Ability.canceled += OnAbility;
-            playerInput.Player.Ultimate.started += OnUltimate;
-            playerInput.Player.Ultimate.canceled += OnUltimate;
-        }
+        playerInput.Player.Move.started += OnMove;
+        playerInput.Player.Move.canceled += OnMove;
+        playerInput.Player.Move.performed += OnMove;
+        playerInput.Player.Fire.started += OnFire;
+        playerInput.Player.Fire.canceled += OnFire;
+        playerInput.Player.Fire.performed += OnFire;
+        playerInput.Player.Boost.started += OnBoost;
+        playerInput.Player.Boost.canceled += OnBoost;
+        playerInput.Player.Ability.started += OnAbility;
+        playerInput.Player.Ability.canceled += OnAbility;
+        playerInput.Player.Ultimate.started += OnUltimate;
+        playerInput.Player.Ultimate.canceled += OnUltimate;
     }
 
     private void Update()
@@ -135,6 +137,7 @@ public class Controller : MonoBehaviour
 
         //Tranform.Translate
         //transform.Translate(currentMovment * Time.deltaTime, Space.World);
+        if (!pv.IsMine) { return; }
 
         HandleRotation();
         HandleFire();
@@ -144,7 +147,7 @@ public class Controller : MonoBehaviour
 
         //CharacterController
         if (isBoostPressed) 
-        { 
+        {
             boostBarValue -= Time.deltaTime * 50.0f;
             boostBar.value = boostBarValue;
 
@@ -214,7 +217,7 @@ public class Controller : MonoBehaviour
             {
                 if (IsOneShot)
                 {
-                    PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, bulletFirePos.rotation);
+                    PhotonNetwork.Instantiate("Bulleto", bulletFirePos.position, bulletFirePos.rotation);
                 }
                 else
                 {
@@ -225,7 +228,7 @@ public class Controller : MonoBehaviour
                         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
                         // Instantiate the bullet in the random direction
-                        PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, rot * bulletFirePos.rotation);
+                        PhotonNetwork.Instantiate("Bulleto", bulletFirePos.position, rot * bulletFirePos.rotation);
                         //fireRate = 0.5f;
                     }
                 }               
@@ -247,15 +250,26 @@ public class Controller : MonoBehaviour
 
         if(isMovmentPressed && !isMoving)
         {
-            animator.SetBool("isMove", true);
+            animator.SetBool(isMovingHash, true);
         }
         else if(!isMovmentPressed && isMoving){
-            animator.SetBool("isMove", false);
+            animator.SetBool(isMovingHash, false);
+        }
+
+        if (isBoostPressed)
+        {
+            animator.SetFloat(tireSpeedHash, 2.0f);
+        }
+        else if (!isBoostPressed)
+        {
+            animator.SetFloat(tireSpeedHash, 1.0f);
         }
     }
 
     void OnMove(InputAction.CallbackContext ctx)
     {
+        if (!pv.IsMine) { return; }
+
         currentMovmentInput = ctx.ReadValue<Vector2>();
         currentMovment.x = currentMovmentInput.x * tankSpeed; 
         currentMovment.y = currentMovmentInput.y * tankSpeed;
@@ -267,6 +281,8 @@ public class Controller : MonoBehaviour
     }
     void OnFire(InputAction.CallbackContext ctx)
     {
+        if (!pv.IsMine) { return; }
+
         currentTurretInput = ctx.ReadValue<Vector2>();
         currentTurret = currentTurretInput;
 
@@ -275,6 +291,8 @@ public class Controller : MonoBehaviour
     }
     void OnBoost(InputAction.CallbackContext ctx)
     {
+        if (!pv.IsMine) { return; }
+
         isBoostPressed = ctx.ReadValueAsButton();
     }
     void OnAbility(InputAction.CallbackContext ctx)
@@ -298,16 +316,22 @@ public class Controller : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!pv.IsMine) { return; }
+
         playerInput.Player.Enable();
     }
 
     private void OnDisable()
     {
+        if (!pv.IsMine) { return; }
+
         playerInput.Player.Disable();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!pv.IsMine) { return; }
+
         if (other.CompareTag("mud"))
         {
             tankSpeed = tankSpeedInMud;
@@ -316,10 +340,11 @@ public class Controller : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!pv.IsMine) { return; }
+
         if (other.CompareTag("mud"))
         {
             tankSpeed = tankOriginalSpeed;
         }
     }
-
 }

@@ -7,7 +7,6 @@ using System;
 public class BulletManager : MonoBehaviour
 {
     public Bullet bulletScriObj;
-    public HealthSystem healthSystem;
 
     [SerializeField] private GameObject hitBullet;
 
@@ -16,7 +15,7 @@ public class BulletManager : MonoBehaviour
     float _time;
 
     float bulletSpeed;
-    float bulletDamage;
+    public float bulletDamage;
     float damageMultiplayer;
     float timeToMultiplayDamage;
     bool slowDownBullet;
@@ -39,12 +38,16 @@ public class BulletManager : MonoBehaviour
     void Start()
     {
         pv = GetComponent<PhotonView>();
+
+        if (!pv.IsMine) { return; }
         bulletSpeed = UnityEngine.Random.Range(bulletSpeed - bulletSpeedRandomness, bulletSpeed + bulletSpeedRandomness); // Set a random speed for the bullet
     }
 
     void Update()
     {
         _time += Time.deltaTime;
+
+        if (!pv.IsMine) { return; }
 
         transform.Translate(Time.deltaTime * Vector2.up * bulletSpeed);
 
@@ -66,44 +69,38 @@ public class BulletManager : MonoBehaviour
                 
             }
         }
-
+        
         if (bulletSpeed < 0)
         {
             BulletDestroying();
             //BulletDestroying(hitBullet);
         }
     }
-
+    
     private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+    {     
+        if (timeToMultiplayDamage <= _time)
         {
-            if (timeToMultiplayDamage <= _time)
-            {
-                bulletDamage += damageMultiplayer;
-            }
-
-            healthSystem = other.GetComponent<HealthSystem>();
-            if(healthSystem = null) { throw new NullReferenceException("Noun healthsystem found!"); }
-            other.GetComponent<HealthSystem>().SetHealth(bulletDamage);
-
+            bulletDamage += damageMultiplayer;
         }
 
-        BulletDestroying();
+        if (pv.IsMine) { StartCoroutine(Destroy()); }
+
+        
 
         //BulletDestroying(hitBullet);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        BulletDestroying();
-    }
     void BulletDestroying()
     {
-        if (!pv.IsMine) { return;}
-
-        PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
+        //PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
         PhotonNetwork.Destroy(gameObject);
+    }
+
+    IEnumerator Destroy()
+    {
+        yield return new WaitForSeconds(0.2f); // wait for the time
+        BulletDestroying();
     }
 }
 

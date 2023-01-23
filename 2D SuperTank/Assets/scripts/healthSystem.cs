@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
 using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
@@ -8,6 +9,7 @@ using Photon.Pun;
 public class HealthSystem : MonoBehaviour
 {
     public Tank tankScriObj;
+    public BulletManager bulletManager; 
 
     GameObject healthBarObj;
     Slider healthBar;
@@ -48,5 +50,27 @@ public class HealthSystem : MonoBehaviour
 
         if (!pv.IsMine) { return; }
         if (tankCurrentHealth <= 0) { PhotonNetwork.Destroy(gameObject); }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!pv.IsMine) { return; }
+
+        if (other.CompareTag("bullet"))
+        {
+            try
+            {
+                float damage = other.GetComponent<BulletManager>().bulletDamage;
+                Debug.Log(damage);
+
+                SetHealth(damage);
+            }
+            catch
+            {
+                SetHealth(-5f);
+            }
+
+            
+        }
     }
 }

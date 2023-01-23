@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            PhotonNetwork.Instantiate("player2", transform.position, Quaternion.identity, 0, null);
+            PhotonNetwork.Instantiate("Tank_shotgun", transform.position, Quaternion.identity, 0, null);
         
         }
         /*

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9122776684074021741}
   - component: {fileID: -5288485758035805239}
   - component: {fileID: 3530934332941325413}
-  - component: {fileID: -2263538751656453797}
   m_Layer: 0
   m_Name: bulletHit_1
   m_TagString: Untagged
@@ -139,29 +138,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: -2263538751656453797}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-2263538751656453797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9122776684074021729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isStart
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
