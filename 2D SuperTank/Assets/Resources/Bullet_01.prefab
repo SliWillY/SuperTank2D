@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7147317735310717138}
   - component: {fileID: 2904979724494185325}
   m_Layer: 0
-  m_Name: Bulleto
+  m_Name: Bullet_01
   m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,6 +125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletScriObj: {fileID: 11400000, guid: c88dda6721e626c4a8acf7117d56b523, type: 2}
   hitBullet: {fileID: 9122776684074021729, guid: a0a2fcd0c8e3b324dad32d90c0b3dc86, type: 3}
+  col: {fileID: 7147317735310717138}
+  sprite: {fileID: 2841834534773192682}
   bulletDamage: 0
 --- !u!135 &7147317735310717138
 SphereCollider:

@@ -13,7 +13,7 @@ public class DestroyGameObject : MonoBehaviour
     }
     private void Update()
     {
-        if (pv.IsMine) { return; }
+        if (!pv.IsMine) { return; }
         StartCoroutine(Destroy());
     }
 

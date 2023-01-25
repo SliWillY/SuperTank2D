@@ -10,7 +10,9 @@ public class HealthSystem : MonoBehaviour
 {
     public Tank tankScriObj;
     public BulletManager bulletManager; 
+    public Controller controller;
 
+    PlayerSpawner spawner;
     GameObject healthBarObj;
     Slider healthBar;
     Image healthBarFill;
@@ -22,11 +24,13 @@ public class HealthSystem : MonoBehaviour
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
+        if (!pv.IsMine) { return; }
 
+        spawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<PlayerSpawner>();
         healthBarObj = GameObject.FindGameObjectWithTag("HealthBar");
         healthBar = healthBarObj.GetComponent<Slider>();
         healthBarFill = healthBarObj.transform.Find("Fill").GetComponent<Image>();
-        pv = GetComponent<PhotonView>();
 
         tankMaxHealth = tankScriObj.maxHealth;
         tankCurrentHealth = tankMaxHealth;
@@ -48,16 +52,22 @@ public class HealthSystem : MonoBehaviour
         healthBar.value = tankCurrentHealth;
         healthBarFill.color = gradient.Evaluate(healthBar.normalizedValue);
 
-        if (!pv.IsMine) { return; }
-        if (tankCurrentHealth <= 0) { PhotonNetwork.Destroy(gameObject); }
+        if (tankCurrentHealth <= 0) 
+        {
+            spawner.Respawn();
+            PhotonNetwork.Destroy(this.gameObject); 
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(!pv.IsMine) { return; }
 
+
         if (other.CompareTag("bullet"))
         {
+            controller.PlaySoundLocally(2);
+
             try
             {
                 float damage = other.GetComponent<BulletManager>().bulletDamage;

@@ -42,6 +42,12 @@ MonoBehaviour:
   - DestroyGas
   - turnOffCamera
   - healthdicrease
+  - MoveSoundEffect
+  - playSound
+  - playSoundRPC
+  - PlaySoundLocally
+  - PlaySoundNewtwork
+  - AssignTankColor
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

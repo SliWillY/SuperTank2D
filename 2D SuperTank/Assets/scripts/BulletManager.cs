@@ -9,6 +9,8 @@ public class BulletManager : MonoBehaviour
     public Bullet bulletScriObj;
 
     [SerializeField] private GameObject hitBullet;
+    [SerializeField] private Collider col;
+    [SerializeField] private SpriteRenderer sprite;
 
     PhotonView pv;
 
@@ -32,7 +34,7 @@ public class BulletManager : MonoBehaviour
         slowDownBullet = bulletScriObj.slowDownBullet;
         bulletSlowDownAmount = bulletScriObj.bulletSlowDownAmount;
         timeToStartSlowDown = bulletScriObj.timeToStartSlowDown;
-        bulletSpeedRandomness = bulletScriObj.bulletSpeedRandomness;  
+        bulletSpeedRandomness = bulletScriObj.bulletSpeedRandomness;
 
     }
     void Start()
@@ -79,27 +81,36 @@ public class BulletManager : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {     
+        col.enabled = false;
+        sprite.enabled = false;
+
+
         if (timeToMultiplayDamage <= _time)
         {
             bulletDamage += damageMultiplayer;
         }
 
-        if (pv.IsMine) { StartCoroutine(Destroy()); }
+        if (pv.IsMine) 
+        {
+            PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
+            StartCoroutine(Destroy());
+        }
 
-        
-
-        //BulletDestroying(hitBullet);
     }
 
     void BulletDestroying()
     {
-        //PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
-        PhotonNetwork.Destroy(gameObject);
+        if (sprite.enabled)
+        {
+            PhotonNetwork.Instantiate("bulletHit_1", transform.position, Quaternion.identity);
+
+        }
+        PhotonNetwork.Destroy(this.gameObject);
     }
 
     IEnumerator Destroy()
     {
-        yield return new WaitForSeconds(0.2f); // wait for the time
+        yield return new WaitForSeconds(0.5f); // wait for the time
         BulletDestroying();
     }
 }

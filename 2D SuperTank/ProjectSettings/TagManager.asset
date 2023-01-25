@@ -18,6 +18,7 @@ TagManager:
   - VirtualCamera
   - BoostBar
   - HealthBar
+  - Spawner
   layers:
   - Default
   - TransparentFX

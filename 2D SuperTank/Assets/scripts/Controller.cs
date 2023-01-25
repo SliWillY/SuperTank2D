@@ -6,20 +6,22 @@ using Cinemachine;
 using UnityEngine;
 using Photon.Pun;
 
-public class Controller : MonoBehaviour
+public class Controller : MonoBehaviourPunCallbacks
 {
     public Tank tankScriObj;
-    public Bullet bulletScriObj;
     public HealthSystem healthSystem;
 
     [SerializeField] private GameObject turret;
     [SerializeField] private Transform bulletFirePos;
     [SerializeField] private Animator animator;
     [SerializeField] private string bulletName;
+    [SerializeField] private AudioSource moveSound;
+    [SerializeField] public AudioSource tankSound;
+    [SerializeField] public AudioClip[] audioclips;
+    [SerializeField] private SpriteRenderer[] spriteRenderer;
 
 
     PlayerControls playerInput;
-    Rigidbody2D rb;
     PhotonView pv;
     CharacterController charaterController;
     GameObject virtualCameraObj;
@@ -64,11 +66,12 @@ public class Controller : MonoBehaviour
     private int isMovingHash;
     private int tireSpeedHash;
 
-    private GameObject bulletObject;
+    Color[] colors = { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.gray, Color.white, Color.grey};
 
-    public void Awake()
+    private void Awake()
     {
-        //check if PhotonView is mine
+        moveSound.mute = true;
+
         pv = GetComponent<PhotonView>();
         if (!pv.IsMine) { return; }
 
@@ -76,7 +79,6 @@ public class Controller : MonoBehaviour
 
         //GetComponent
         playerInput = new PlayerControls();
-        rb = GetComponent<Rigidbody2D>();
         boostBar = boostBarObj.GetComponent<Slider>();
         charaterController = GetComponent<CharacterController>();
 
@@ -100,7 +102,6 @@ public class Controller : MonoBehaviour
         IsOneShot = tankScriObj.isOneShot;
         bulletSpreadAngle = tankScriObj.bulletSpreadAngle;
         bulletAmountPerShot = tankScriObj.bulletAmountPerShot;
-        bulletObject = bulletScriObj.bulletObject;
 
         //Local variables
         boostMultiplayer = 2.0f;
@@ -126,6 +127,13 @@ public class Controller : MonoBehaviour
         playerInput.Player.Ultimate.canceled += OnUltimate;
     }
 
+    private void Start()
+    {
+        if (!pv.IsMine) { return; }
+
+        pv.RPC("AssignTankColor", RpcTarget.All);
+    }
+
     private void Update()
     {
         //rb.velocity = Time.fixedDeltaTime * currentMovment;
@@ -143,6 +151,15 @@ public class Controller : MonoBehaviour
         HandleFire();
         HandleAnimation();
 
+        if (isMovmentPressed)
+        {
+            moveSound.mute = false;
+        }
+        else
+        {
+            moveSound.mute = true;
+        }
+
         boostBarValue = Mathf.Clamp(boostBarValue, 1.0f, 100.0f);
 
         //CharacterController
@@ -154,20 +171,25 @@ public class Controller : MonoBehaviour
             if (boostBarValue > 1)
             {
                 charaterController.Move(currentBoostMovment * Time.deltaTime);
+                //moveSound.pitch = 1.2f;
             }
             else
             {
                 charaterController.Move(currentMovment * Time.deltaTime);
+                //moveSound.pitch = 1.0f;
             }
         }
         else 
         { 
             charaterController.Move(currentMovment * Time.deltaTime);
+            //moveSound.pitch = 1.0f;
         }
 
-        if(boostBarValue < 100)
+        if (boostBarValue < 100)
         boostBarValue += Time.deltaTime * 10.0f;
         boostBar.value = boostBarValue;
+
+
     }
 
     void HandleRotation()
@@ -217,7 +239,11 @@ public class Controller : MonoBehaviour
             {
                 if (IsOneShot)
                 {
-                    PhotonNetwork.Instantiate("Bulleto", bulletFirePos.position, bulletFirePos.rotation);
+                    float angle = Random.Range(-bulletSpreadAngle, bulletSpreadAngle);
+                    Quaternion rot = Quaternion.Euler(0, 0, angle);
+                    pv.RPC("PlaySoundNewtwork", RpcTarget.All, 0);
+
+                    PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, rot * bulletFirePos.rotation);
                 }
                 else
                 {
@@ -228,10 +254,11 @@ public class Controller : MonoBehaviour
                         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
                         // Instantiate the bullet in the random direction
-                        PhotonNetwork.Instantiate("Bulleto", bulletFirePos.position, rot * bulletFirePos.rotation);
+                        PhotonNetwork.Instantiate(bulletName, bulletFirePos.position, rot * bulletFirePos.rotation);
                         //fireRate = 0.5f;
                     }
-                }               
+                    pv.RPC("PlaySoundNewtwork", RpcTarget.All, 0);
+                }
                 nextFireTime = Time.time + fireRate;
                 bulletsLeft--;
             }
@@ -246,23 +273,23 @@ public class Controller : MonoBehaviour
 
     void HandleAnimation()
     {
-        bool isMoving = animator.GetBool(isMovingHash);
+        bool isMoving = animator.GetBool("isMove");
 
         if(isMovmentPressed && !isMoving)
         {
-            animator.SetBool(isMovingHash, true);
+            animator.SetBool("isMove", true);
         }
         else if(!isMovmentPressed && isMoving){
-            animator.SetBool(isMovingHash, false);
+            animator.SetBool("isMove", false);
         }
 
         if (isBoostPressed)
         {
-            animator.SetFloat(tireSpeedHash, 2.0f);
+            animator.SetFloat("tireSpeed", 2.0f);
         }
         else if (!isBoostPressed)
         {
-            animator.SetFloat(tireSpeedHash, 1.0f);
+            animator.SetFloat("tireSpeed", 1.0f);
         }
     }
 
@@ -306,6 +333,7 @@ public class Controller : MonoBehaviour
 
     IEnumerator Reload()
     {
+        PlaySoundLocally(1);
         reloading = true; // set the reloading flag
         yield return new WaitForSeconds(reloadTime); // wait for the reload time
         bulletsLeft = magazineSize; // set the bullets left to the magazine size
@@ -345,6 +373,29 @@ public class Controller : MonoBehaviour
         if (other.CompareTag("mud"))
         {
             tankSpeed = tankOriginalSpeed;
+        }
+    }
+
+    public void PlaySoundLocally(int clip)
+    {
+        tankSound.PlayOneShot(audioclips[clip]);
+    }
+
+
+    [PunRPC]
+    void PlaySoundNewtwork(int clip) 
+    {
+        tankSound.PlayOneShot(audioclips[clip]);
+    }
+
+    [PunRPC]
+    void AssignTankColor()
+    {
+        int randomIndex = Random.Range(0,  colors.Length);
+
+        foreach(SpriteRenderer sprite in spriteRenderer)
+        {
+            sprite.color = colors[randomIndex];
         }
     }
 }
