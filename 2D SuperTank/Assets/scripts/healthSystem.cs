@@ -63,7 +63,10 @@ public class HealthSystem : MonoBehaviour
     {
         if(!pv.IsMine) { return; }
 
-
+        if (controller.PowerUpShield)
+        {
+            return;
+        }
         if (other.CompareTag("bullet"))
         {
             controller.PlaySoundLocally(2);

@@ -19,6 +19,7 @@ public class Controller : MonoBehaviourPunCallbacks
     [SerializeField] public AudioSource tankSound;
     [SerializeField] public AudioClip[] audioclips;
     [SerializeField] private SpriteRenderer[] spriteRenderer;
+    [SerializeField] private GameObject Shield;
 
 
     PlayerControls playerInput;
@@ -26,6 +27,7 @@ public class Controller : MonoBehaviourPunCallbacks
     CharacterController charaterController;
     GameObject virtualCameraObj;
     CinemachineVirtualCamera virtualCamera;
+    CinemachineCameraOffset cameraOffset;
     GameObject boostBarObj;
     Slider boostBar;
 
@@ -36,6 +38,8 @@ public class Controller : MonoBehaviourPunCallbacks
 
     Vector2 currentTurretInput;
     Vector2 currentTurret;
+    Vector3 cMoffset;
+    Vector3 _velocity = Vector3.zero;
 
     bool isMovmentPressed;
     bool isFirePressed;
@@ -49,6 +53,8 @@ public class Controller : MonoBehaviourPunCallbacks
     float nextFireTime; // the time when the next bullet can be fired
     int bulletsLeft; // the number of bullets left in the magazine
     bool reloading; // flag to check if reloading
+    bool PowerUpFireRate = false;
+    public bool PowerUpShield = false;
 
     private float tankSpeed;
     private float tankMaxHealth;
@@ -90,6 +96,7 @@ public class Controller : MonoBehaviourPunCallbacks
         virtualCameraObj = GameObject.FindGameObjectWithTag("VirtualCamera");
         virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = this.transform;
+        cameraOffset = virtualCameraObj.GetComponent<CinemachineCameraOffset>();
 
         //Assign scribtableObj values to local
         tankSpeed = tankScriObj.speed;
@@ -111,6 +118,7 @@ public class Controller : MonoBehaviourPunCallbacks
         bulletsLeft = magazineSize;
         nextFireTime = 0f;
         reloading = false;
+        cMoffset.z = 0f;
 
         //Input Invoke
         playerInput.Player.Move.started += OnMove;
@@ -146,6 +154,9 @@ public class Controller : MonoBehaviourPunCallbacks
         //Tranform.Translate
         //transform.Translate(currentMovment * Time.deltaTime, Space.World);
         if (!pv.IsMine) { return; }
+
+        //TurretSmoth transaction
+        cameraOffset.m_Offset = Vector3.SmoothDamp(cameraOffset.m_Offset, cMoffset, ref _velocity, 0.4f);
 
         HandleRotation();
         HandleFire();
@@ -313,6 +324,9 @@ public class Controller : MonoBehaviourPunCallbacks
         currentTurretInput = ctx.ReadValue<Vector2>();
         currentTurret = currentTurretInput;
 
+        cMoffset.x = currentTurret.x;
+        cMoffset.y = currentTurret.y;
+
         isFirePressed = currentTurretInput.x != 0 || currentTurretInput.y != 0;
 
     }
@@ -357,6 +371,67 @@ public class Controller : MonoBehaviourPunCallbacks
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        if (!pv.IsMine) { return; }
+
+        if (other.CompareTag("mud"))
+        {
+            tankSpeed = tankSpeedInMud;
+        }
+
+        if (other.CompareTag("PowerUpSpawner"))
+        {
+            other.GetComponent<PowerUpSpawner>().TakePowerUp();
+        }
+
+        if (other.CompareTag("bulletPower"))
+        {
+             OnPowerUp(0);
+        }
+        if (other.CompareTag("ShieldPower"))
+        {
+            OnPowerUp(1);
+        }
+    }
+
+    private void OnPowerUp(int power)
+    {
+        if (power == 0)
+        {
+            if (!PowerUpFireRate)
+            {
+                PowerUpFireRate = true;
+                fireRate = fireRate * 0.6f;
+                reloadTime = reloadTime * 0.6f;
+                tankSound.PlayOneShot(audioclips[4]);
+                StartCoroutine(FireRatePowerUp());
+            }
+        }
+        else if (power == 1)
+        {
+            PowerUpShield = true;
+            Shield.SetActive(true);
+            tankSound.PlayOneShot(audioclips[3]);
+            StartCoroutine(ShieldPowerUp());
+        }
+    }
+
+    IEnumerator FireRatePowerUp()
+    {
+        yield return new WaitForSeconds(5f);
+        PowerUpFireRate = false;
+        fireRate = tankScriObj.fireRate;
+        reloadTime = tankScriObj.reloadTime;
+    }
+
+    IEnumerator ShieldPowerUp()
+    {
+        yield return new WaitForSeconds(10f);
+        PowerUpShield = false;
+        Shield.SetActive(false);
+    }
+
+    private void OnTriggerStay(Collider other)
     {
         if (!pv.IsMine) { return; }
 

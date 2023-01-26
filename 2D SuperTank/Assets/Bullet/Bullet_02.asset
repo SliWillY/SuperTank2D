@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c174927772d8c54088c2a0b4ac15d12, type: 3}
   m_Name: Bullet_02
   m_EditorClassIdentifier: 
-  bulletSpeed: 45
-  bulletDamage: 25
+  bulletSpeed: 40
+  bulletDamage: 35
   damageMultiplayer: 30
-  timeToMultiplayDamage: 1.2
+  timeToMultiplayDamage: 0.5
   slowDownBullet: 0
   bulletSlowDownAmount: 0
   bulletSpeedRandomness: 1

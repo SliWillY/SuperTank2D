@@ -110,7 +110,7 @@ public class BulletManager : MonoBehaviour
 
     IEnumerator Destroy()
     {
-        yield return new WaitForSeconds(0.5f); // wait for the time
+        yield return new WaitForSeconds(1f); // wait for the time
         BulletDestroying();
     }
 }
