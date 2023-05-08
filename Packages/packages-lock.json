@@ -1,5 +1,7 @@
 {
   "dependencies": {
+<<<<<<< Updated upstream
+=======
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 0,
@@ -122,6 +124,7 @@
       },
       "url": "https://packages.unity.com"
     },
+>>>>>>> Stashed changes
     "com.unity.collab-proxy": {
       "version": "1.17.7",
       "depth": 0,
@@ -138,6 +141,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
+=======
     "com.unity.feature.2d": {
       "version": "1.0.0",
       "depth": 0,
@@ -152,6 +157,7 @@
         "com.unity.2d.tilemap.extras": "2.2.3"
       }
     },
+>>>>>>> Stashed changes
     "com.unity.ide.rider": {
       "version": "3.0.16",
       "depth": 0,
@@ -177,6 +183,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
+=======
     "com.unity.inputsystem": {
       "version": "1.4.4",
       "depth": 0,
@@ -193,6 +201,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+>>>>>>> Stashed changes
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.0.2",
       "depth": 2,
@@ -200,6 +209,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
+=======
     "com.unity.profiling.core": {
       "version": "1.0.2",
       "depth": 1,
@@ -207,6 +218,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+>>>>>>> Stashed changes
     "com.unity.services.core": {
       "version": "1.6.0",
       "depth": 1,
@@ -218,6 +230,8 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< Updated upstream
+=======
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
       "depth": 1,
@@ -227,6 +241,7 @@
       },
       "url": "https://packages.unity.com"
     },
+>>>>>>> Stashed changes
     "com.unity.test-framework": {
       "version": "1.1.31",
       "depth": 0,
@@ -268,6 +283,19 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+<<<<<<< Updated upstream
+    "com.unity.visualscripting": {
+      "version": "1.7.8",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+=======
+>>>>>>> Stashed changes
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
